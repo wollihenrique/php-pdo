@@ -30,6 +30,10 @@ class PdoStudentsRepository implements StudentsRepository
         $sqlInsert = "INSERT INTO Students (name, birth_date) VALUES (:name, :birth_date);"; 
         $stmt = $this->connection->prepare($sqlInsert);
 
+        if($stmt === false){
+            throw new \RuntimeException($this->connection->errorInfo()[2]);
+        }
+
         $sucess = $stmt->execute([
             ':name' => $student->name(),
             ':birth_date' => $student->birthDate()->format('Y-m-d')
