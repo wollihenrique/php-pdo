@@ -2,11 +2,18 @@
 
 namespace Alura\Pdo\Domain\Model;
 
+use Phone;
+
 class Student
 {
     private ?int $id;
     private string $name;
     private \DateTimeInterface $birthDate;
+    /**
+     * Summary of phones
+     * @var array
+     */
+    private array $phones = [];
 
     public function __construct(?int $id, string $name, \DateTimeInterface $birthDate)
     {
@@ -47,5 +54,17 @@ class Student
         return $this->birthDate
             ->diff(new \DateTimeImmutable())
             ->y;
+    }
+
+    public function addPhone(Phone $phone){
+        $this->phones[] = $phone;
+    }
+
+    /**
+     *
+     * @return Phone[]
+     */
+    public function Phones(){
+        return $this->phones;
     }
 }
