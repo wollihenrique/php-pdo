@@ -2,15 +2,15 @@
 
 use Alura\Pdo\Domain\Model\Student;
 use Alura\Pdo\Infraestructure\Persistence\ConnectionCreator;
+use Alura\Pdo\Infraestructure\Repository\PdoStudentsRepository;
 
-require './vendor/autoload.php';
+require 'vendor/autoload.php';
 
 $pdo = ConnectionCreator::createConnection();
+$repository = new PdoStudentsRepository($pdo);
+$studentList = $repository->allStudents();
 
-$statement = $pdo->query('SELECT * FROM students;');
-$studentDataList = $statement->fetchAll(PDO::FETCH_ASSOC);
-$studentList = [];
-
+var_dump($studentList);
 
 // while ($studentData = $statement->fetch(PDO::FETCH_ASSOC)) {
 //     $student = new Student(
@@ -23,12 +23,11 @@ $studentList = [];
 // }
 // exit();
 
-foreach($studentDataList as $studentData) {
-    $studentList[] = new Student(
-        $studentData['id'], 
-        $studentData['name'], 
-        new DateTimeImmutable($studentData['birth_date'])
-    );
-}
+// foreach($studentDataList as $studentData) {
+//     $studentList[] = new Student(
+//         $studentData['id'], 
+//         $studentData['name'], 
+//         new DateTimeImmutable($studentData['birth_date'])
+//     );
+// }
 
-var_dump($studentList);

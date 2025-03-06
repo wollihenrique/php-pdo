@@ -1,5 +1,7 @@
 <?php
 
+namespace Alura\Pdo\Domain\Model;
+
 class Phone
 {
     private ?int $id;

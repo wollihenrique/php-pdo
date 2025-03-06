@@ -2,7 +2,7 @@
 
 namespace Alura\Pdo\Domain\Model;
 
-use Phone;
+use Alura\Pdo\Domain\Model\Phone;
 
 class Student
 {

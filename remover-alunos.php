@@ -8,7 +8,7 @@ $pdo = ConnectionCreator::createConnection();
 
 $query = "DELETE FROM students WHERE id = ?;";
 $preparedStatement = $pdo->query($query);
-$preparedStatement->bindValue(1, 9, PDO::PARAM_INT);
+$preparedStatement->bindValue(1, 5, PDO::PARAM_INT);
 var_dump($preparedStatement->execute());
 
 ?>

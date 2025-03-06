@@ -7,7 +7,7 @@ require './vendor/autoload.php';
 
 $pdo = ConnectionCreator::createConnection();
 
-$student = new Student(null, "Nicolas Henrique Monteiro Santos", new DateTimeImmutable('2010-03-03'));
+$student = new Student(null, "Miguel Morgado", new DateTimeImmutable('2010-03-03'));
 $nome = $student->name();
 $sqlInsert = "INSERT INTO students (name, birth_date) VALUES (:name, :birth_date);";
 $statement = $pdo->prepare($sqlInsert);

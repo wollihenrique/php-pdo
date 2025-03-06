@@ -3,6 +3,7 @@
 namespace Alura\Pdo\Infraestructure\Repository;
 
 use Alura\Pdo\Domain\Model\Student;
+use Alura\Pdo\Domain\Model\Phone;
 use Alura\Pdo\Domain\Repository\StudentsRepository;
 use Alura\Pdo\Infraestructure\Persistence\ConnectionCreator;
 use DateTimeImmutable;
@@ -82,19 +83,45 @@ class PdoStudentsRepository implements StudentsRepository
 
     }
 
-    private function hydrateStudentList(\PDOStatement $stmt): array {
+    private function hydrateStudentList(\PDOStatement $stmt): array 
+    {
         $studentDataList = $stmt->fetchAll();
         $studentList = [];
 
         foreach($studentDataList as $studentData){
-            $studentList[] = new Student(
+            $student = new Student(
                 $studentData['id'],
                 $studentData['name'],
                 new DateTimeImmutable($studentData['birth_date'])
             );
+
+            $this->fillPhonesOf($student);
+            $studentList[] = $student;
         }
 
         return $studentList;
+    }
+
+    public function fillPhonesOf(Student $student): void 
+    {
+        $sqlPhones = "SELECT id, area_code, number FROM phones WHERE student_id = :id";
+        $stmt = $this->connection->prepare($sqlPhones);
+        $stmt->bindValue(':id', $student->id(), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $phonesDataList = $stmt->fetchAll();
+
+        if (!empty($phonesDataList)) {
+            foreach($phonesDataList as $phoneData){
+                $phone = new Phone(
+                    $phoneData['id'],
+                    $phoneData['area_code'],
+                    $phoneData['number']
+                );
+    
+                $student->addPhone($phone);
+            }
+        }
     }
 }
 
